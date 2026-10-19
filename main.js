@@ -233,5 +233,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   try { SurveyController.init(); } catch(e){ console.warn('SurveyController.init failed', e); }
 
+  // Ensure hero image displays when src is empty (fix broken placeholder)
+  try {
+    const heroImg = document.getElementById('heroMainImg');
+    if (heroImg) {
+      const defaultHeroPath = (typeof getAsset === 'function') ? getAsset('combo-phong-khach.jpg') : 'combo-phong-khach.jpg';
+      if (!heroImg.getAttribute('src') || heroImg.getAttribute('src') === '') {
+        heroImg.src = defaultHeroPath;
+      }
+      heroImg.addEventListener('error', () => {
+        console.warn('Hero image failed to load:', defaultHeroPath);
+        const parent = heroImg.closest('.hero-card-glow');
+        if (parent) parent.style.display = 'none';
+      });
+    }
+  } catch(err) {
+    console.warn('Hero image fallback failed', err);
+  }
+
   console.log('SmartZen E-Commerce Platform loaded successfully!');
 });
