@@ -163,19 +163,7 @@
       <!-- Right Visual Showcase -->
       <div class="hero-visual">
         <div class="hero-card-glow">
-          <img id="heroMainImg" alt="Không gian sống thông minh SmartZen" loading="lazy">
-          <script>
-            (function(){
-              try {
-                var img = document.getElementById('heroMainImg');
-                if(img){
-                  var path = (typeof getAsset === 'function') ? getAsset('combo-phong-khach.jpg') : './combo-phong-khach.jpg';
-                  img.src = path;
-                  img.onerror = function(){ this.style.display='none'; var p=this.closest('.hero-card-glow'); if(p) p.style.display='none'; };
-                }
-              } catch(e) { console.warn('hero image script error', e); }
-            })();
-          </script>
+          <img src="combo-phong-khach.jpg" id="heroMainImg" alt="Không gian sống thông minh SmartZen" loading="lazy" onerror="this.style.display='none'; var p=this.closest('.hero-card-glow'); if(p) p.style.display='none';">
           <!-- Floating Status Widget Left -->
           <div class="hero-floating-stat stat-left">
             <div class="stat-icon">
