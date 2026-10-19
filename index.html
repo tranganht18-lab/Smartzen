@@ -1,13 +1,167 @@
-<!-– ASSET_BASE script inserted by Copilot –>
-<script>
-  // Ensure ASSET_BASE exists for both root-hosted and subpath-hosted GitHub Pages
-  window.ASSET_BASE = (function(){
-    // Hostings like https://USERNAME.github.io/REPO/ use a pathname that begins with '/REPO'
-    var match = location.pathname.match(/^\/(.*?)\//);
-    if(match && match[1] && match[1] !== ''){
-      // If site is hosted in a repo (subpath), return '/repo/' as base
-      return '/' + match[1] + '/';
-    }
-    return './';
-  })();
-</script>
+<!-- Copilot: insert ASSET_BASE helper and update image path usage -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartZen - Hệ Sinh Thái Thiết Bị Nhà Thông Minh & Trợ Lý AI Tư Vấn</title>
+  <meta name="description" content="SmartZen cung cấp giải pháp nhà thông minh tương lai: Đèn thông minh, cảm biến an ninh, robot hút bụi lau nhà, khóa FaceID, động cơ rèm tự động chuẩn Matter & Apple HomeKit. Tích hợp AI Chatbot Dify tư vấn giải pháp tối ưu.">
+  <meta name="keywords" content="SmartZen, nhà thông minh, smart home, đèn thông minh, robot hút bụi, khóa thông minh, dify ai chatbot, cảm biến thông minh">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300F0FF'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- ASSET_BASE helper (injected) -->
+  <script>
+    // Ensure ASSET_BASE exists for both root-hosted and subpath-hosted GitHub Pages
+    window.ASSET_BASE = (function(){
+      // Hostings like https://USERNAME.github.io/REPO/ use a pathname that begins with '/REPO'
+      var match = location.pathname.match(/^\/(.*?)\//);
+      if(match && match[1] && match[1] !== ''){
+        // If site is hosted in a repo (subpath), return '/repo/' as base
+        return '/' + match[1] + '/';
+      }
+      return './';
+    })();
+
+    // Helper to build asset path consistently
+    window.getAsset = function(path){
+      if(!path) return path;
+      if (/^(https?:)?\\/\\//.test(path)) return path; // already absolute
+      return (window.ASSET_BASE || './') + path.replace(/^\//, '');
+    };
+  </script>
+</head>
+<body>
+
+  <!-- Top Notification Bar -->
+  <div class="top-notice-bar">
+    <div>
+      🔥 <span class="highlight">ƯU ĐÃI THÁNG 10/2026:</span> Nhập mã <strong style="color: #FFF; background: rgba(0,240,255,0.2); padding: 2px 6px; border-radius: 4px;">SMARTZEN2026</strong> giảm ngay 10% toàn bộ đơn hàng
+    </div>
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <span>🚚 Miễn phí vận chuyển toàn quốc đơn từ 500K</span>
+      <span style="opacity: 0.5;">|</span>
+      <span>⚡ Đổi mới 1:1 trong 24 tháng</span>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <!-- Brand Logo -->
+      <a href="index.html" class="brand-logo" id="brandLogoLink">
+        <div class="brand-logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+            <path d="M2 17l10 5 10-5"></path>
+            <path d="M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <div class="brand-logo-text">
+          <span class="brand-title">Smart<span>Zen</span></span>
+          <span class="brand-subtitle">Future Living Tech</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Menu -->
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#heroSection" class="nav-link active">Trang Chủ</a></li>
+        <li><a href="#combosSection" class="nav-link">Combo Không Gian</a></li>
+        <li><a href="#catalogSection" class="nav-link">Sản Phẩm</a></li>
+        <li><a href="#aiAdvisorSection" class="nav-link">AI Tư Vấn (Dify)</a></li>
+        <li><a href="#surveySection" class="nav-link">Khảo Sát Tận Nhà</a></li>
+      </ul>
+
+      <!-- Action Buttons -->
+      <div class="nav-actions">
+        <!-- Survey CTA Button -->
+        <a href="#surveySection" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.55rem 1rem;" id="navSurveyBtn">
+          📐 Đặt Lịch Khảo Sát
+        </a>
+
+        <!-- Cart Trigger Button -->
+        <button class="btn btn-primary btn-icon cart-btn-trigger" id="headerCartBtn" title="Xem giỏ hàng">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-badge" id="headerCartBadge">0</span>
+        </button>
+
+        <!-- Mobile Menu Hamburger -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Mở menu điều hướng">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="heroSection">
+    <div class="container hero-grid">
+      <!-- Left Content -->
+      <div class="hero-content">
+        <div class="badge-tag pulse" style="margin-bottom: 1rem;">
+          AI BRAND LAUNCH LAB • HỆ SINH THÁI NHÀ THÔNG MINH 2026
+        </div>
+        <h1 class="hero-title tech-heading">
+          Kiến Tạo Không Gian Sống <span class="text-gradient">Tương Lai</span>
+        </h1>
+        <p class="hero-desc">
+          SmartZen mang đến trải nghiệm sống tiện nghi vượt trội với thiết bị nhà thông minh tích hợp 
+          <strong>Trí Tuệ Nhân Tạo (AIoT)</strong> chuẩn quốc tế Matter & Apple HomeKit. Tự động hóa ánh sáng, 
+          an ninh 24/7 và làm sạch thông minh chỉ với một chạm hoặc ra lệnh giọng nói.
+        </p>
+
+        <!-- CTA Group -->
+        <div class="hero-cta-group">
+          <a href="#combosSection" class="btn btn-primary" id="heroExploreCombosBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            Khám Phá Combo Không Gian
+          </a>
+          <button class="btn btn-outline-glow" onclick="DifyChatbot.toggleWindow()" id="heroLaunchBotBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            AI Dify Tư Vấn Trong 1 Phút
+          </button>
+        </div>
+
+        <!-- Ecosystem Strip -->
+        <div class="ecosystem-strip">
+          <div class="ecosystem-label">TƯƠNG THÍCH MỌI NỀN TẢNG THÔNG MINH TOÀN CẦU</div>
+          <div class="ecosystem-icons">
+            <div class="eco-pill">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
+              <strong>Matter</strong>
+            </div>
+            <div class="eco-pill">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.84c.64-.78 1.08-1.86.96-2.95-1 .04-2.12.67-2.77 1.44-.57.67-.99 1.77-.86 2.83 1.11.09 2.11-.56 2.67-1.32"/></svg>
+              Apple HomeKit
+            </div>
+            <div class="eco-pill">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+              Google Home
+            </div>
+            <div class="eco-pill">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              Zigbee 3.0 & Thread
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Visual Showcase -->
+      <div class="hero-visual">
+        <div class="hero-card-glow">
+          <img src="" id="heroMainImg" alt="Không gian sống thông minh SmartZen" loading="lazy">
