@@ -2,6 +2,9 @@
  * SmartZen E-Commerce - Product Catalog & Filter Controller
  */
 
+// Resolve asset base (supports hosting at /smartzen-site/ or root)
+const ASSET_BASE = window.ASSET_BASE || (location.pathname.startsWith('/smartzen-site') ? '/smartzen-site/' : './');
+
 const Catalog = {
   currentCategory: 'all',
   searchQuery: '',
@@ -44,9 +47,9 @@ const Catalog = {
       if (this.searchQuery) {
         const query = this.searchQuery.toLowerCase();
         const matchName = product.name.toLowerCase().includes(query);
-        const matchTagline = product.tagline.toLowerCase().includes(query);
-        const matchCategory = product.categoryName.toLowerCase().includes(query);
-        const matchFeatures = product.features.some(f => f.toLowerCase().includes(query));
+        const matchTagline = (product.tagline || '').toLowerCase().includes(query);
+        const matchCategory = (product.categoryName || '').toLowerCase().includes(query);
+        const matchFeatures = (product.features || []).some(f => f.toLowerCase().includes(query));
         if (!matchName && !matchTagline && !matchCategory && !matchFeatures) {
           return false;
         }
@@ -90,7 +93,7 @@ const Catalog = {
     grid.innerHTML = products.map(product => `
       <div class="product-card" data-id="${product.id}">
         <div class="product-thumb-wrap">
-          <img src="${product.image}" alt="${product.name}" loading="lazy">
+          <img src="${ASSET_BASE + product.image}" alt="${product.name}" loading="lazy">
           ${product.badge ? `<span class="badge-tag product-badge-float pulse">${product.badge}</span>` : ''}
           <div class="product-quick-actions">
             <button class="btn-action-circle" onclick="Catalog.openQuickView('${product.id}')" title="Xem nhanh thông số">
@@ -153,7 +156,7 @@ const Catalog = {
     if (!modal) return;
 
     // Populate modal
-    document.getElementById('qvProductImg').src = product.image;
+    document.getElementById('qvProductImg').src = ASSET_BASE + product.image;
     document.getElementById('qvProductCategory').textContent = product.categoryName;
     document.getElementById('qvProductTitle').textContent = product.name;
     document.getElementById('qvProductRating').textContent = product.rating;
@@ -165,7 +168,7 @@ const Catalog = {
     // Features
     const featuresList = document.getElementById('qvProductFeatures');
     if (featuresList) {
-      featuresList.innerHTML = product.features.map(f => `
+      featuresList.innerHTML = (product.features || []).map(f => `
         <li style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; color: var(--text-secondary); font-size: 0.88rem;">
           <span style="color: var(--cyan-neon);">✓</span> ${f}
         </li>
@@ -175,7 +178,7 @@ const Catalog = {
     // Specs table
     const specsTable = document.getElementById('qvProductSpecs');
     if (specsTable) {
-      specsTable.innerHTML = Object.entries(product.specs).map(([key, val]) => `
+      specsTable.innerHTML = Object.entries(product.specs || {}).map(([key, val]) => `
         <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
           <td style="padding: 0.5rem 0; color: var(--text-muted); font-size: 0.82rem; width: 40%;">${key}</td>
           <td style="padding: 0.5rem 0; color: var(--text-white); font-weight: 600; font-size: 0.82rem;">${val}</td>
@@ -186,8 +189,8 @@ const Catalog = {
     // In the box
     const boxList = document.getElementById('qvProductBox');
     if (boxList) {
-      boxList.innerHTML = product.inTheBox.map(item => `
-        <span style="display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.78rem; color: var(--text-secondary); margin: 0.2rem 0.3rem 0.2rem 0;">
+      boxList.innerHTML = (product.inTheBox || []).map(item => `
+        <span style="display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.78rem; color: var(--text-secondary); margin-right:0.4rem; margin-bottom:0.4rem; display:inline-block;">
           📦 ${item}
         </span>
       `).join('');
