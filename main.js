@@ -1,6 +1,16 @@
 /**
  * SmartZen E-Commerce - Main Application Logic
+ * Patched to resolve asset path issues and guard DifyChatbot initialization.
  */
+
+// Ensure a global asset helper so other modules can resolve image paths reliably
+window.ASSET_BASE = window.ASSET_BASE || '';
+window.getAsset = function(path){
+  if(!path) return path;
+  // If path already looks absolute or contains a protocol, return as-is
+  if (/^(https?:)?\/\//.test(path)) return path;
+  return (window.ASSET_BASE || '') + path;
+};
 
 // Global Toast System
 function showToast(message, type = 'info') {
@@ -43,7 +53,7 @@ function renderCombosSection() {
   container.innerHTML = SMARTZEN_COMBOS.map(combo => `
     <div class="combo-card glass-card" data-combo-id="${combo.id}">
       <div class="combo-image-wrap">
-        <img src="${combo.image}" alt="${combo.title}" loading="lazy">
+        <img src="${getAsset(combo.image)}" alt="${combo.title}" loading="lazy">
         <span class="badge-tag combo-badge-floating pulse">${combo.badge}</span>
         <span class="combo-savings-pill">Tiết kiệm ${formatCurrency(combo.savings)}</span>
       </div>
@@ -101,7 +111,7 @@ function openComboDetailModal(comboId) {
   const modal = document.getElementById('comboDetailModal');
   if (!modal) return;
 
-  document.getElementById('comboModalImg').src = combo.image;
+  document.getElementById('comboModalImg').src = getAsset(combo.image);
   document.getElementById('comboModalBadge').textContent = combo.badge;
   document.getElementById('comboModalTitle').textContent = combo.title;
   document.getElementById('comboModalSubtitle').textContent = combo.subtitle;
@@ -210,10 +220,18 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollEffects();
 
   // Initialize Submodules
-  Cart.init();
-  Catalog.init();
-  DifyChatbot.init();
-  SurveyController.init();
+  try { Cart.init(); } catch(e){ console.warn('Cart.init failed', e); }
+  try { Catalog.init(); } catch(e){ console.warn('Catalog.init failed', e); }
+
+  // Safe DifyChatbot init — guard missing script
+  if (typeof DifyChatbot !== 'undefined' && DifyChatbot && typeof DifyChatbot.init === 'function') {
+    try { DifyChatbot.init(); } catch (e) { console.error('DifyChatbot.init error', e); }
+  } else {
+    // provide a lightweight stub so calls like DifyChatbot.toggleWindow() won't throw
+    window.DifyChatbot = window.DifyChatbot || { toggleWindow: () => { showToast('Chatbot chưa cấu hình. Vui lòng liên hệ quản trị.', 'warning'); }, init: () => {} };
+  }
+
+  try { SurveyController.init(); } catch(e){ console.warn('SurveyController.init failed', e); }
 
   console.log('SmartZen E-Commerce Platform loaded successfully!');
 });
